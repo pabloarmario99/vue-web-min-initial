@@ -47,9 +47,15 @@ import { scrollToSection } from '@/utils/scrollToSection';
 
 const photos = ["justice", "arkham", "superman", "varios", "villana", "villano", "grupo", "robin", "anne", "joker", "resplandor", "cat", "gafas", "league", "fondoVerde"]; 
 
-const dies = ref<DateValue>()
+interface Coordinatas {
+  x: number
+  y: number
+}
 
+const dies = ref<DateValue>()
 const videreMenu = ref<boolean>(false)
+
+const mousePositione = ref<Coordinatas>({x: 0, y: 0})
 
 const handleResize = () => {
   if(window.innerWidth <= 640){
@@ -65,6 +71,26 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize)
 })
+
+const cumMouseMove = (e: MouseEvent) => {
+  const rect = (e.target as HTMLElement).getBoundingClientRect()
+  const centerX = rect.width/2
+  const centerY = rect.height/2
+
+  const mouseX = e.clientX - rect.left
+  const mouseY = e.clientY - rect.top
+
+  mousePositione.value = {
+    x:(centerX - mouseX) * 0.1,
+    y:(centerY - mouseY) * 0.1
+  }
+}
+
+const cumMouseLeave = () => {
+mousePositione.value = {x: 0, y: 0}
+}
+
+
 
 </script>
 <template>
@@ -112,7 +138,17 @@ onUnmounted(() => {
 
       <header class="titulus">
           <h1>Batman</h1>
-          <div id="titulus-batman" class="titulus-img"></div>
+          <div 
+          id="titulus-batman" 
+          class="titulus-img"
+          @mousemove="cumMouseMove"
+          @mouseleave="cumMouseLeave"
+          :style="{
+            backgroundPositionX: `calc(50% + ${mousePositione.x}px)`,
+            backgroundPositionY: `calc(50% + ${mousePositione.y}px)`,
+            transition: 'background-position 0.1s ease-out'
+          }"
+          ></div>
           <p>Él puede tomar la decisión que nadie más puede, la decisión correcta</p>
       </header>
 
