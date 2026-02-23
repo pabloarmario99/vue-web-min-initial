@@ -11,7 +11,7 @@ import Button from '@/components/ui/button/Button.vue';
 
         <header class="bg-[#ffde00] w-full border-black">
 
-            <div class="flex flex-col md:flex-row items-center justify-between p-3 mx-auto max-w-[1400px]">
+            <div class="flex flex-col md:flex-row items-center justify-between p-3 mx-auto max-w-350">
                 <LogoSimpsons estilus="w-[8rem] h-auto"/>
 
                 <div class="flex gap-6 pt-3" >
